@@ -1,0 +1,73 @@
+{
+  "name": "fastify-di",
+  "version": "0.4.4",
+  "description": "fastify dependency injection",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "fastify": "^2.12.1",
+    "fastify-plugin": "^1.6.1",
+    "fastify-static": "^2.6.0",
+    "glob-promise": "^3.4.0",
+    "mysql2": "^2.1.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.24"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/bluebird": "^3.5.30",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.1",
+    "@types/react": "^16.9.23",
+    "@types/react-dom": "^16.9.5",
+    "@types/validator": "^12.0.1",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "jest": "^25.1.0",
+    "nodemon": "^2.0.2",
+    "ts-jest": "^25.2.1",
+    "ts-loader": "^6.2.1",
+    "tslint": "^5.20.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "start": "npm run cp && node dist/main.js",
+    "dev": "npm run cp && nodemon dist/main.js",
+    "watch": "rm -rf dist && mkdir dist && npm run cp && tsc --watch --p tsconfig.build.json",
+    "test": "jest test",
+    "coverage": "jest test --coverage",
+    "lint": "eslint 'src/**/*.ts'",
+    "build": "rm -rf dist &&  tsc --p tsconfig.build.json",
+    "web": "webpack --watch",
+    "web:build": "webpack"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "public/*"
+    ],
+    "delay": "2500"
+  },
+  "keywords": [
+    "fastify",
+    "typescript",
+    "typeorm",
+    "dependency injection",
+    "jest"
+  ],
+  "author": "ynwd",
+  "license": "MIT"
+}
