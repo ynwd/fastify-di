@@ -1,17 +1,12 @@
-require('dotenv').config()
-export const configuration = {
-  app: {
-    env: process.env.APP_ENV || 'development',
-    port: Number(process.env.APP_PORT) || 3000
-  },
-  mysql: {
-    name: 'default',
-    type: 'mysql',
-    port: Number(process.env.MYSQL_PORT) || 3306,
-    username: process.env.MYSQL_USERNAME || 'root',
-    password: process.env.MYSQL_PASSWORD || 'root',
-    database: process.env.MYSQL_DATABASE || 'test',
-    synchronize: process.env.MYSQL_SYNCHRONIZE || true,
-    logging: process.env.MYSQL_LOGGING || false
+import { createError } from './error'
+
+function loadConfig (): any {
+  try {
+    const configFile = process.cwd() + '/server.config.js'
+    return require(configFile)
+  } catch (error) {
+    throw createError('LOAD_CONFIG_ERROR', error)
   }
 }
+
+export const configuration = loadConfig()
