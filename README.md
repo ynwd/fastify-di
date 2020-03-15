@@ -67,13 +67,13 @@ npm i typescript @types/node -D
   ```
 - Create controller:
   ```ts
-  // file web.controller.ts
+  // file hello.controller.ts
   import { Controller, Get } from 'fastify-di'
   import { FastifyReply, FastifyRequest } from 'fastify'
   import { Http2ServerResponse } from 'http2'
 
   @Controller()
-  export class WebController {
+  export class HelloController {
     @Get()
     sayHello (request: FastifyRequest, reply: FastifyReply<Http2ServerResponse>): any {
       reply.send('hello')
