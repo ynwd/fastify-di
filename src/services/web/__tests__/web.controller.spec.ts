@@ -1,12 +1,10 @@
 import { FastifyInstance } from 'fastify'
 import { createServer } from '../../../core'
-import path from 'path'
 
-const targetDir = path.join(__dirname, '../../../')
 let server: FastifyInstance
 
 beforeAll(async () => {
-  server = await createServer({ logger: false }, targetDir)
+  server = await createServer()
 })
 
 afterAll(() => {
