@@ -1,5 +1,5 @@
 import * as http from 'http'
-import { FastifyInstance } from 'fastify'
+import fastify, { FastifyInstance } from 'fastify'
 import {
   Connection,
   CreateDateColumn,
@@ -62,19 +62,38 @@ export declare abstract class BasicService {
   public err (errorName: string, error: Error): Error
   public close (): void
 }
+
+export type config = {
+  app: {
+    env: string;
+    port: number;
+  };
+  mysql: {
+    name: string;
+    type: 'mysql';
+    port: number;
+    username: string;
+    password: string;
+    database: string;
+    synchronize: boolean;
+    logging: boolean;
+  };
+}
+
 export declare function Get(options?: any): Function
 export declare function Post(options?: any): Function
 export declare function Controller(options?: any): Function
 export declare function Service(): Function
 export declare function InjectService(service: Function): any
-export declare function createServer(fastifyOpts: any, targetDir: string): Promise<FastifyInstance>
-export declare function createConnection(targetDir: string): Promise<Connection>
+export declare function createServer(fastifyOpts?: fastify.ServerOptions): Promise<FastifyInstance>
+export declare function createConnection(): Promise<Connection>
 export declare function start(server: FastifyInstance): Promise<void>
 export declare function createError(name: string, error: Error): Error
-export declare function loader (targetDir: string): Promise<void>
+export declare function loader (): Promise<void>
 export declare const controllerContainer: Map<string | symbol | Object, any>
 export declare const serviceContainer: Map<string | symbol | Object, any>
 export declare const methodContainer: any[]
 export declare const hookContainer: any[]
 export declare const pluginContainer: any[]
 export declare const token: Symbol
+export declare const configuration: config

@@ -6,17 +6,23 @@ import { createError } from './error'
 import { corePlugin } from './coreplugin'
 import { createPlugins, createControllers } from './module.creator'
 
-export const createServer = async (fastifyOpts: any, targetDir: string): Promise<FastifyInstance> => {
+/**
+ * Create fastify server.
+ * Check this for detail options: https://www.fastify.io/docs/latest/Server/
+ * @param options - Fastify server options
+ */
+export const createServer = async (options?: fastify.ServerOptions): Promise<FastifyInstance> => {
   try {
-    const entityFiles = `${targetDir}/**/**/*.entity.*s`
-    const conn = await createConnection(entityFiles)
-    await loader(targetDir) // load all service & controller classes for dependency injection
+    const sourceDir = process.env.APP_ENV ? '/dist' : '/src'
+    const targetDir = process.cwd() + sourceDir
+    const conn = await createConnection()
+    await loader() // load all service & controller classes for dependency injection
     const database = {
       name: conn.name,
       database: conn.driver.database,
       connected: conn.isConnected
     }
-    let server = fastify(fastifyOpts)
+    let server = fastify(options)
     server.log.info(database, 'connected')
     server = await createPlugins(server, targetDir)
     const controllers = await createControllers()
@@ -31,9 +37,9 @@ export const createServer = async (fastifyOpts: any, targetDir: string): Promise
 
 export const start = async (server: FastifyInstance): Promise<void> => {
   await server.ready()
-  console.info('Loading all modules finished')
   server.listen(configuration.app.port, (error: Error) => {
-    console.info('Server running on port:', configuration.app.port)
+    console.info(configuration)
+    console.info('Loading all modules finished')
     if (error) {
       createError('START_SERVER_ERROR', error)
       process.exit(1)

@@ -12,7 +12,7 @@ interface Controller {
 
 export const createPlugins = async (server: FastifyInstance, targetDir: string): Promise<any> => {
   try {
-    const plugins = await pluginsLoader(targetDir)
+    const plugins = await pluginsLoader()
     plugins.map(item => {
       server.register(fp(item.plugin))
     })

@@ -1,18 +1,17 @@
 import { createConnection, loader, serviceContainer } from '../../../core'
 import { UserService } from '../user.service'
-import path from 'path'
-
-const workingDir = '../'
-const targetDir = path.join(__dirname, workingDir)
-const entity = path.join(__dirname, `${workingDir}*.entity.*s`)
 
 let service: UserService
 
 beforeAll(async () => {
-  await createConnection(entity)
-  await loader(targetDir)
-  service = serviceContainer.get('UserService')
-  service.deleteAll()
+  try {
+    await createConnection()
+    await loader()
+    service = serviceContainer.get('UserService')
+    service.deleteAll()
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 afterAll(() => {
