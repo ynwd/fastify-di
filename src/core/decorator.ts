@@ -64,12 +64,16 @@ function saveMethod (options: any): Function {
   }
 }
 
-/**
- * get decorator
- */
 export const Get = (options?: any): Function => saveMethod({ method: 'GET', ...options })
 
-/**
- * post decorator
- */
 export const Post = (options?: any): Function => saveMethod({ method: 'POST', ...options })
+
+export const Delete = (options?: any): Function => saveMethod({ method: 'DELETE', ...options })
+
+export const Head = (options?: any): Function => saveMethod({ method: 'HEAD', ...options })
+
+export const Patch = (options?: any): Function => saveMethod({ method: 'PATCH', ...options })
+
+export const Put = (options?: any): Function => saveMethod({ method: 'PUT', ...options })
+
+export const Options = (options?: any): Function => saveMethod({ method: 'OPTIONS', ...options })

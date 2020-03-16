@@ -1,9 +1,14 @@
 // import path from 'path'
 import glob from 'glob-promise'
 import { createError } from './error'
+import { configuration } from './configuration'
 
 export function getSourceDir (): string {
-  const sourceDir = (process.env.APP_ENV === 'development' || process.env.APP_ENV === 'production')
+  const sourceDir = (
+    configuration.app.env === 'development' ||
+    configuration.app.env === 'production' ||
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'production')
     ? '/dist' : '/src'
   return process.cwd() + sourceDir
 }
