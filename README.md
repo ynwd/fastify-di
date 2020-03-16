@@ -3,6 +3,7 @@
 
 - [Install](#install)
 - [Getting Started](#getting-started)
+- [More example](#more-example)
 
 ## Install 
 ```
@@ -98,3 +99,7 @@ npm i typescript @types/node -D
     ```
     node dist/main.js
     ``` 
+
+
+## More Example
+- For more example, check this: https://github.com/ynwd/fastify-di-example
