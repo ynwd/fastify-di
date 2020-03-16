@@ -1,11 +1,11 @@
 import { Connection, createConnection as create } from 'typeorm'
 import { configuration } from './configuration'
 import { createError } from './error'
+import { getSourceDir } from './loader'
 
 export async function createConnection (): Promise<Connection> {
   try {
-    const sourceDir = configuration.app.env === 'test' ? '/src' : '/dist'
-    const targetDir = process.cwd() + sourceDir
+    const targetDir = getSourceDir()
     const entities = `${targetDir}/**/**/*.entity.*s`
     const typeOrmConfig: any = configuration.mysql
     typeOrmConfig.entities = [entities]

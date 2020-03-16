@@ -1,12 +1,16 @@
 // import path from 'path'
 import glob from 'glob-promise'
 import { createError } from './error'
-import { configuration } from './configuration'
+
+export function getSourceDir (): string {
+  const sourceDir = (process.env.APP_ENV === 'development' || process.env.APP_ENV === 'production')
+    ? '/dist' : '/src'
+  return process.cwd() + sourceDir
+}
 
 export const moduleLoader = async (globPattern: string): Promise<any> => {
   try {
-    const sourceDir = configuration.app.env === 'test' ? '/src' : '/dist'
-    const targetDir = process.cwd() + sourceDir
+    const targetDir = getSourceDir()
     const cwd = targetDir
     const files = await glob(globPattern, { cwd, ignore: '{**/*.spec, spec}.*s' })
     return files.map(file => require(`${targetDir}/${file}`))
