@@ -1,6 +1,6 @@
 {
   "name": "fastify-di",
-  "version": "0.4.13",
+  "version": "0.4.14",
   "description": "fastify dependency injection",
   "main": "index.js",
   "directories": {
