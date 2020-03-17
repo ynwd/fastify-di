@@ -10,7 +10,7 @@ interface Controller {
   methodList: any[];
 }
 
-export const createPlugins = async (server: FastifyInstance, targetDir: string): Promise<any> => {
+export const createPlugins = async (server: FastifyInstance): Promise<any> => {
   try {
     const plugins = await pluginsLoader()
     plugins.map(item => {

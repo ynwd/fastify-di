@@ -13,8 +13,6 @@ import { createPlugins, createControllers } from './module.creator'
  */
 export const createServer = async (options?: fastify.ServerOptions): Promise<FastifyInstance> => {
   try {
-    const sourceDir = process.env.APP_ENV ? '/dist' : '/src'
-    const targetDir = process.cwd() + sourceDir
     const conn = await createConnection()
     await loader() // load all service & controller classes for dependency injection
     const database = {
@@ -24,7 +22,7 @@ export const createServer = async (options?: fastify.ServerOptions): Promise<Fas
     }
     let server = fastify(options)
     server.log.info(database, 'connected')
-    server = await createPlugins(server, targetDir)
+    server = await createPlugins(server)
     const controllers = await createControllers()
     server
       .register(corePlugin)
