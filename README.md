@@ -3,6 +3,7 @@
 
 - [Install](#install)
 - [Getting Started](#getting-started)
+- [Dependency Injection](#dependency-injection)
 - [More example](#more-example)
 
 ## Install 
@@ -98,8 +99,42 @@ npm i typescript @types/node -D
     ```
     ```
     node dist/main.js
-    ``` 
+    ```
 
+# Dependency Injection
+- Create Service
+  ```ts
+  // file hello.service.ts
+  import { Service } from 'fastify-di'
+
+  @Service()
+  export class HelloService {
+    public sayHello (): string {
+      return 'Hello'
+    }
+  }
+
+  ```
+- Inject service to controller
+  ```ts
+  // file hello.controller.ts
+  import { Controller, Get, InjectService } from 'fastify-di'
+  import { FastifyReply, FastifyRequest } from 'fastify'
+  import { Http2ServerResponse } from 'http2'
+  import { HelloService } from './HelloService'
+
+  @Controller()
+  export class HelloController {
+    @InjectService()
+    service: HelloService
+
+    @Get()
+    sayHello (request: FastifyRequest, reply: FastifyReply<Http2ServerResponse>): void {
+      const hello = this.service.sayHello()
+      reply.send(hello)
+    }
+  }
+  ```
 
 ## More Example
 - For more example, check this: https://github.com/ynwd/fastify-di-example
