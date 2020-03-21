@@ -7,8 +7,7 @@ import {
   PrimaryGeneratedColumn,
   ObjectType,
   EntitySchema,
-  Repository,
-  getConnection
+  Repository
 } from 'typeorm'
 
 declare module 'fastify' {
