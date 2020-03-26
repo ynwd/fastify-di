@@ -77,3 +77,11 @@ export const Patch = (options?: any): Function => saveMethod({ method: 'PATCH', 
 export const Put = (options?: any): Function => saveMethod({ method: 'PUT', ...options })
 
 export const Options = (options?: any): Function => saveMethod({ method: 'OPTIONS', ...options })
+
+export function RouteHook (hook: string): Function {
+  return (target: any, hookFnName: string): any => {
+    const className = target.constructor.name
+    const routeHook = { className, hookFnName, hook }
+    methodContainer.push(routeHook)
+  }
+}

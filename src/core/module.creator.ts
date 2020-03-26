@@ -27,9 +27,11 @@ export const createRoutes = (controller: Controller): any => {
   return function buildRoutes (fastify: FastifyInstance, opts: any, next: Function): void {
     try {
       methodList.map(controllerMethod => {
-        const { functionName, options: { url, method, schema, ...args } } = controllerMethod
+        const { hookFnName, hook, functionName, options: { url, method, schema, ...args } } = controllerMethod
         const handler: any = async (...args: any) => instance[functionName](...args)
-        fastify.route({ url, method, schema, handler, ...args })
+        const hookHandler: any = async (...args: any) => instance[hookFnName](...args)
+        const routeOptions = { url, method, schema, handler, ...args }
+        fastify.route({ ...routeOptions, [hook]: hookHandler })
       })
       // clear methodList array
       methodList.length = 0

@@ -23,4 +23,9 @@ export class UserController {
     const user = await this.userService.register(payload)
     reply.sendOk(user)
   }
+
+  @Post({ url: '/' })
+  ok (): void {
+    console.log('ok')
+  }
 }
