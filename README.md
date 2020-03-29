@@ -34,7 +34,7 @@ npm i typescript @types/node -D
       env: 'development',
       port: 3000
     },
-    mysql: {
+    database: {
       name: 'default',
       type: 'mysql',
       port: 3306,

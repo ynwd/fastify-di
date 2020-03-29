@@ -7,7 +7,7 @@ export async function createConnection (): Promise<Connection> {
   try {
     const targetDir = getSourceDir()
     const entities = `${targetDir}/**/**/*.entity.*s`
-    const typeOrmConfig: any = configuration.mysql
+    const typeOrmConfig: any = configuration.database
     typeOrmConfig.entities = [entities]
     return create(typeOrmConfig)
   } catch (error) {

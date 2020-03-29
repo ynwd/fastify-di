@@ -6,7 +6,7 @@ export type config = {
     env: string;
     port: number;
   };
-  mysql: {
+  database: {
     name: string;
     type: 'mysql';
     port: number;

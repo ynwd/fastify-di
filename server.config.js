@@ -5,7 +5,7 @@ module.exports = {
     env: process.env.APP_ENV || 'development',
     port: Number(process.env.APP_PORT) || 3000
   },
-  mysql: {
+  database: {
     name: 'default',
     type: 'mysql',
     port: Number(process.env.MYSQL_PORT) || 3306,
