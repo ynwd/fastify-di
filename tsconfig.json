@@ -8,7 +8,7 @@
     "strict": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
-    "sourceMap": true,
+    "inlineSourceMap":true,
     "outDir": "dist",
     "baseUrl": ".",
     "jsx": "react",

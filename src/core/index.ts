@@ -10,7 +10,8 @@ export {
   Post,
   InjectService,
   Controller,
-  Service
+  Service,
+  Hook
 } from './decorator'
 
 export {

@@ -2,7 +2,8 @@
 import {
   controllerContainer,
   serviceContainer,
-  methodContainer
+  methodContainer,
+  hookContainer
 } from './container'
 
 /**
@@ -13,9 +14,10 @@ export function Controller (options?: any): ClassDecorator {
     const instance = new target()
     const controllerName = target.name
     const methodList = methodContainer.filter(method => method.className === controllerName)
+    const hookList = hookContainer.filter(hook => hook.className === controllerName)
     const controllerInstance = options
-      ? { instance, options, methodList }
-      : { instance, options: { prefix: '/' }, methodList }
+      ? { instance, options, methodList, hookList }
+      : { instance, options: { prefix: '/' }, methodList, hookList }
     controllerContainer.set(controllerName, controllerInstance)
   }
 }
@@ -64,6 +66,16 @@ function saveMethod (options: any): Function {
   }
 }
 
+type HookName = 'onRequest' | 'onResponse' | 'preParsing' | 'preValidation' | 'preHandler' | 'preSerialization'
+
+export function Hook (hook: HookName): Function {
+  return (target: any, hookFnName: string): any => {
+    const className = target.constructor.name
+    const routeHook = { className, hookFnName, hook }
+    hookContainer.push(routeHook)
+  }
+}
+
 export const Get = (options?: any): Function => saveMethod({ method: 'GET', ...options })
 
 export const Post = (options?: any): Function => saveMethod({ method: 'POST', ...options })
@@ -77,11 +89,3 @@ export const Patch = (options?: any): Function => saveMethod({ method: 'PATCH', 
 export const Put = (options?: any): Function => saveMethod({ method: 'PUT', ...options })
 
 export const Options = (options?: any): Function => saveMethod({ method: 'OPTIONS', ...options })
-
-export function RouteHook (hook: string): Function {
-  return (target: any, hookFnName: string): any => {
-    const className = target.constructor.name
-    const routeHook = { className, hookFnName, hook }
-    methodContainer.push(routeHook)
-  }
-}

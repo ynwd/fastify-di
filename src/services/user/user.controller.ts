@@ -1,4 +1,4 @@
-import { Controller, InjectService, Get, Post } from '../../core'
+import { Controller, InjectService, Get, Post, Hook } from '../../core'
 import { UserService } from './user.service'
 import { User } from './user.entity'
 import { FastifyRequest, FastifyReply } from 'fastify'
@@ -9,6 +9,13 @@ import { getAllUserSchema } from './user.schema'
 export class UserController {
   @InjectService(UserService)
   userService: UserService
+
+  @Hook('onRequest')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async req (request: FastifyRequest, reply: FastifyReply<Http2ServerResponse>): Promise<void> {
+    // This hook will always be executed after the shared `onRequest` hooks
+    // console.log('request', request.headers)
+  }
 
   @Get({ schema: getAllUserSchema })
   async getAll (request: FastifyRequest, reply: FastifyReply<Http2ServerResponse>): Promise<User[]> {
@@ -22,10 +29,5 @@ export class UserController {
     const payload = request.body
     const user = await this.userService.register(payload)
     reply.sendOk(user)
-  }
-
-  @Post({ url: '/' })
-  ok (): void {
-    console.log('ok')
   }
 }

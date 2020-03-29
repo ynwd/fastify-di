@@ -8,6 +8,8 @@ interface Controller {
   instance: any;
   options: any;
   methodList: any[];
+  hookList: any[];
+  hookOptions: any;
 }
 
 export const createPlugins = async (server: FastifyInstance): Promise<any> => {
@@ -22,18 +24,19 @@ export const createPlugins = async (server: FastifyInstance): Promise<any> => {
   }
 }
 
-export const createRoutes = (controller: Controller): any => {
-  const { instance, methodList } = controller
-  return function buildRoutes (fastify: FastifyInstance, opts: any, next: Function): void {
+const createRoutes = (controller: Controller): any => {
+  const { instance, methodList, hookOptions } = controller
+  return (fastify: FastifyInstance, opts: any, next: Function): void => {
     try {
       methodList.map(controllerMethod => {
-        const { hookFnName, hook, functionName, options: { url, method, schema, ...args } } = controllerMethod
+        const { functionName, options } = controllerMethod
         const handler: any = async (...args: any) => instance[functionName](...args)
-        const hookHandler: any = async (...args: any) => instance[hookFnName](...args)
-        const routeOptions = { url, method, schema, handler, ...args }
-        fastify.route({ ...routeOptions, [hook]: hookHandler })
+        const routeOptions = { ...options, handler }
+        if (hookOptions) {
+          const routeOptions = { ...options, handler }
+          fastify.route({ ...routeOptions, ...hookOptions })
+        } else fastify.route(routeOptions)
       })
-      // clear methodList array
       methodList.length = 0
       next()
     } catch (error) {
@@ -42,14 +45,28 @@ export const createRoutes = (controller: Controller): any => {
   }
 }
 
+export const createHooks = (controller: Controller): any => {
+  const { instance, hookList } = controller
+  let hookOptions: any
+  if (hookList.length > 0) {
+    hookList.map(item => {
+      const { hookFnName, hook } = item
+      const hookHandler: any = async (...args: any) => instance[hookFnName](...args)
+      hookOptions = { ...{}, [hook]: hookHandler }
+    })
+    controller.hookOptions = hookOptions
+  }
+  hookList.length = 0
+  return createRoutes(controller)
+}
+
 export const createControllers = async (): Promise<any> => {
-  return function (fastify: FastifyInstance, opts: any, next: Function): void {
+  return (fastify: FastifyInstance, opts: any, next: Function): void => {
     try {
       controllerContainer.forEach((controller) => {
-        const routeList = createRoutes(controller)
+        const routeList = createHooks(controller)
         fastify.register(routeList, controller.options)
       })
-      // clear controllerContainer map
       controllerContainer.clear()
       next()
     } catch (error) {

@@ -79,6 +79,9 @@ export type config = {
   };
 }
 
+type HookName = 'onRequest' | 'onResponse' | 'preParsing' | 'preValidation' | 'preHandler' | 'preSerialization'
+
+export declare function Hook(hook: HookName): Function
 export declare function Get(options?: any): Function
 export declare function Post(options?: any): Function
 export declare function Controller(options?: any): Function

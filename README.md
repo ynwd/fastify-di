@@ -4,6 +4,7 @@
 - [Install](#install)
 - [Getting Started](#getting-started)
 - [Dependency Injection](#dependency-injection)
+- [Create Hooks](#create-hooks)
 - [More example](#more-example)
 
 ## Install 
@@ -115,10 +116,10 @@ npm i typescript @types/node -D
   }
 
   ```
-- Inject service to controller
+- Inject service to controller & add hook
   ```ts
   // file hello.controller.ts
-  import { Controller, Get, InjectService } from 'fastify-di'
+  import { Controller, Get, InjectService, Hook } from 'fastify-di'
   import { FastifyReply, FastifyRequest } from 'fastify'
   import { Http2ServerResponse } from 'http2'
   import { HelloService } from './HelloService'
@@ -135,6 +136,35 @@ npm i typescript @types/node -D
     }
   }
   ```
+
+## Create Hooks
+```ts
+  // file hello.controller.ts
+  import { Controller, Get, InjectService, Hook } from 'fastify-di'
+  import { FastifyReply, FastifyRequest } from 'fastify'
+  import { Http2ServerResponse } from 'http2'
+  import { HelloService } from './HelloService'
+
+  @Controller()
+  export class HelloController {
+    @InjectService()
+    service: HelloService
+
+    @Get()
+    sayHello (request: FastifyRequest, reply: FastifyReply<Http2ServerResponse>): void {
+      const hello = this.service.sayHello()
+      reply.send(hello)
+    }
+
+    @Hook('onRequest')
+    async myHook (request: FastifyRequest, reply: FastifyReply<Http2ServerResponse>): Promise<void> {
+      // This hook will always be executed after the shared `onRequest` hooks
+      // Check this for detail: https://www.fastify.io/docs/latest/Hooks/#scope
+      console.log('request', request.headers)
+    }
+  }
+  ```
+
 
 ## More Example
 - For more example, check this: https://github.com/ynwd/fastify-di-example

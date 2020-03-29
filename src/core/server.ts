@@ -38,7 +38,7 @@ export const start = async (server: FastifyInstance): Promise<void> => {
   server.listen(configuration.app.port, (error: Error) => {
     configuration.mysql.password = configuration.mysql.password.replace(/[a-z0-9]/g, '*')
     configuration.mysql.username = configuration.mysql.username.replace(/[a-z0-9]/g, '*')
-    console.info(configuration)
+    // console.info(configuration)
     console.info('Loading all modules finished')
     console.info('Server running on port:', configuration.app.port)
     if (error) {
