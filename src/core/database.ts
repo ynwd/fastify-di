@@ -5,9 +5,10 @@ import { getSourceDir } from './loader'
 
 export async function createConnection (): Promise<Connection> {
   try {
+    const config = await configuration
     const targetDir = getSourceDir()
     const entities = `${targetDir}/**/**/*.entity.*s`
-    const typeOrmConfig: any = configuration.database
+    const typeOrmConfig: any = config.database
     typeOrmConfig.entities = [entities]
     return create(typeOrmConfig)
   } catch (error) {

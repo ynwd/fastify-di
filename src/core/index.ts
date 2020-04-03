@@ -1,4 +1,4 @@
-export { configuration, config } from './configuration'
+export { configuration } from './configuration'
 export { loader } from './loader'
 export { createConnection } from './database'
 export { BasicEntity } from './basic.entity'

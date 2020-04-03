@@ -1,6 +1,6 @@
 import fastify, { FastifyInstance } from 'fastify'
 import { loader } from './loader'
-import { configuration } from './configuration'
+import { configuration as config } from './configuration'
 import { createConnection } from './database'
 import { createError } from './error'
 import { corePlugin } from './coreplugin'
@@ -35,6 +35,7 @@ export const createServer = async (options?: fastify.ServerOptions): Promise<Fas
 
 export const start = async (server: FastifyInstance): Promise<void> => {
   await server.ready()
+  const configuration = await config
   server.listen(configuration.app.port, (error: Error) => {
     configuration.database.password = configuration.database.password.replace(/[a-z0-9]/g, '*')
     configuration.database.username = configuration.database.username.replace(/[a-z0-9]/g, '*')
