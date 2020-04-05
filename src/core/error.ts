@@ -3,6 +3,6 @@ export function createError (name: string, error: Error): Error {
   err.name = name
   err.message = error.message
   err.stack = error.stack
-  console.error(err)
+  console.error('%s ==> %O', new Date().toLocaleString(), err)
   return err
 }
